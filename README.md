@@ -1,92 +1,370 @@
-Robustness of Statistical and Machine-Learning Regression Models
-Overview
-This project investigates how statistical and machine-learning regression models behave when classical regression assumptions are violated.
-The study uses controlled simulation experiments to examine model performance under:
-Baseline conditions
-Heteroscedasticity
-Outliers
-Multicollinearity
-Nonlinearity
-A real-world application using the California Housing dataset is also included.
-The project compares five regression models:
-1.Ordinary Least Squares (OLS)
-2.Ridge Regression
-3.Huber Regression
-4.Random Forest
-5.XGBoost
-Research Question
-How do different regression and machine-learning models behave when classical regression assumptions are progressively violated, and how does their predictive performance change across different data-generating conditions?
-Objectives
-The main objectives are to:
-Establish a baseline comparison of statistical and machine-learning regression models.
-Examine model behavior under heteroscedasticity.
-Investigate the effect of increasing outlier contamination.
-Study model performance under multicollinearity.
-Evaluate model behavior under nonlinear relationships.
-Compare simulation results with a real-world housing dataset.
-Identify conditions under which model performance changes substantially.
-Models
-OLS
-Ordinary Least Squares provides the classical linear regression benchmark.
-Ridge Regression
-Ridge Regression applies L2 regularization and is included to investigate performance when predictors are correlated.
-Huber Regression
-Huber Regression uses a robust loss function designed to reduce the influence of large residuals.
-Random Forest
-Random Forest is an ensemble tree-based method capable of representing nonlinear relationships and interactions.
-XGBoost
-XGBoost is a gradient-boosting tree-based method designed for flexible predictive modelling.
-Experimental Design
-The simulation study uses controlled data-generating processes.
-Baseline
-The baseline response is generated using:
-Y = 3 + 2X1 + 1.5X2 - X3 + error
-Heteroscedasticity
-The error variance changes according to the magnitude of X1.
-Outliers
-Response contamination is introduced at:
-0%, 2%, 5%, and 10%
-Multicollinearity
-Correlated predictors are generated so that one predictor is strongly related to another.
-Nonlinearity
-A quadratic relationship is introduced through:
-Y = 3 + 2(X1²) + 1.5X2 - X3 + error
-Evaluation Metrics
-The models are evaluated using:
-RMSE: Root Mean Squared Error
-MAE: Mean Absolute Error
-R²: Coefficient of Determination
-Lower RMSE and MAE indicate lower prediction error, while higher R² indicates greater explained variation.
-Main Findings
-The experiments demonstrate that model performance depends on the underlying data-generating process.
-Baseline
-OLS, Ridge, and Huber produced very similar performance. Random Forest and XGBoost produced somewhat higher prediction errors under the reported baseline setting.
-Heteroscedasticity
-OLS, Ridge, and Huber remained relatively close. Random Forest and XGBoost produced higher errors in the reported experiment.
-Outliers
-RMSE increased for all five models as outlier contamination increased from 0% to 10%.
-Huber produced slightly lower RMSE than OLS and Ridge at each contamination level, but the advantage was modest.
-Multicollinearity
-OLS, Ridge, and Huber again produced very similar results. Ridge had slightly lower RMSE and MAE and slightly higher R² in the reported experiment.
-Nonlinearity
-The nonlinear simulation did not result in Random Forest or XGBoost outperforming the linear models. This demonstrates that model performance depends on the specific nonlinear data-generating mechanism rather than on nonlinearity alone.
-California Housing
-On the California Housing dataset, Random Forest produced the lowest RMSE and MAE and the highest R² among the five tested models. XGBoost also performed better than OLS, Ridge, and Huber on the reported test set.
-California Housing Results
-Model	RMSE	MAE	R²
-OLS	69,297.72	50,413.43	0.6488
-Ridge	69,250.31	50,391.14	0.6493
-Huber	76,534.64	55,733.46	0.5717
-Random Forest	48,757.92	31,663.84	0.8262
-XGBoost	56,343.41	38,938.38	0.7679
-Outlier Results
-RMSE under increasing response-outlier contamination:
-Outliers	OLS	Ridge	Huber	Random Forest	XGBoost
-0%	1.0463	1.0463	1.0463	1.2148	1.1458
-2%	2.4340	2.4340	2.4259	2.6114	2.5737
-5%	3.2668	3.2667	3.2519	3.4519	3.4053
-10%	4.7499	4.7499	4.7302	5.0150	4.9404
-Repository Structure
+# Robustness of Statistical and Machine-Learning Regression Models under Violations of Classical Regression Assumptions
+
+## Overview
+
+This project investigates how statistical and machine-learning regression models behave when classical regression assumptions are progressively violated.
+
+The study compares traditional statistical regression methods with robust and machine-learning approaches under controlled simulation settings. The analysis also evaluates the models on a real-world dataset, the California Housing dataset.
+
+The main motivation is to understand whether model performance remains reliable when real-world data depart from the assumptions commonly associated with classical regression.
+
+---
+
+## Research Question
+
+> **How do different regression and machine-learning models behave when classical regression assumptions are progressively violated, and which models remain reliable under these conditions?**
+
+---
+
+## Objectives
+
+The main objectives of this project are to:
+
+* Compare statistical and machine-learning regression models under controlled conditions.
+* Investigate the effect of violations of classical regression assumptions.
+* Evaluate model performance using RMSE, MAE, and R².
+* Examine model behaviour under:
+
+  * Heteroscedasticity
+  * Outliers
+  * Multicollinearity
+  * Nonlinearity
+* Compare simulation-based findings with performance on a real-world dataset.
+* Identify situations in which traditional statistical models and machine-learning models behave differently.
+* Provide a reproducible framework for studying regression model robustness.
+
+---
+
+## Models Compared
+
+Five regression models are evaluated throughout the study:
+
+| Model                | Type                   | Main Characteristics                          |
+| -------------------- | ---------------------- | --------------------------------------------- |
+| **OLS**              | Statistical regression | Classical linear regression                   |
+| **Ridge Regression** | Regularized regression | Uses L2 regularization                        |
+| **Huber Regression** | Robust regression      | Reduces the influence of extreme observations |
+| **Random Forest**    | Machine learning       | Ensemble of decision trees                    |
+| **XGBoost**          | Machine learning       | Gradient-boosted decision trees               |
+
+---
+
+## Experimental Design
+
+The project uses controlled simulation experiments to study model behaviour.
+
+A baseline dataset is generated according to a linear regression relationship:
+
+$$
+Y = 3 + 2X_1 + 1.5X_2 - X_3 + \epsilon
+$$
+
+where:
+
+* \(X_1, X_2, X_3\) are predictor variables.
+* \(\epsilon\) is a random error term.
+
+The baseline setting is then modified to introduce different departures from classical regression assumptions.
+
+### Conditions Studied
+
+1. **Baseline**
+2. **Heteroscedasticity**
+3. **Outliers**
+4. **Multicollinearity**
+5. **Nonlinearity**
+6. **Real-world California Housing data**
+
+---
+
+## Assumption Violations
+
+### 1. Heteroscedasticity
+
+The variance of the error term is allowed to change with the value of a predictor.
+
+The simulated error standard deviation is:
+
+$$
+\sigma_i = 0.5 + 1.5|X_1|
+$$
+
+This creates increasing error variability as the magnitude of \(X_1\) increases.
+
+---
+
+### 2. Outliers
+
+Response-variable outliers are introduced at different contamination levels:
+
+* 0%
+* 2%
+* 5%
+* 10%
+
+The outliers are generated by adding large random deviations to selected response values.
+
+This experiment examines how prediction error changes as the proportion of contaminated observations increases.
+
+---
+
+### 3. Multicollinearity
+
+Multicollinearity is introduced by generating two highly correlated predictors:
+
+$$
+X_2 = X_1 + \epsilon
+$$
+
+where \(\epsilon\) is a small random error.
+
+This creates a strong relationship between \(X_1\) and \(X_2\).
+
+---
+
+### 4. Nonlinearity
+
+A nonlinear relationship is introduced by replacing the linear contribution of \(X_1\) with a quadratic relationship:
+
+$$
+Y = 3 + 2X_1^2 + 1.5X_2 - X_3 + \epsilon
+$$
+
+This allows the study to investigate how the models respond when the true data-generating relationship is nonlinear.
+
+---
+
+## Evaluation Metrics
+
+Model performance is evaluated using three metrics.
+
+### RMSE
+
+Root Mean Squared Error measures the typical magnitude of prediction errors while giving greater weight to large errors.
+
+$$
+RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}
+$$
+
+Lower values indicate smaller prediction errors.
+
+### MAE
+
+Mean Absolute Error measures the average absolute prediction error.
+
+$$
+MAE = \frac{1}{n}\sum_{i=1}^{n}|y_i-\hat{y}_i|
+$$
+
+Lower values indicate better predictive accuracy.
+
+### R²
+
+R² measures the proportion of variation in the response explained by the model.
+
+$$
+R^2 = 1-\frac{\sum(y_i-\hat{y}_i)^2}
+{\sum(y_i-\bar{y})^2}
+$$
+
+Higher values generally indicate greater explanatory/predictive performance.
+
+---
+
+# Simulation Results
+
+## Baseline Results
+
+The baseline experiment used repeated simulations to compare the five models under a correctly specified linear data-generating process.
+
+The following results are based on 30 simulations.
+
+| Model         |     RMSE |      MAE |       R² |  RMSE SD |   MAE SD |    R² SD |
+| ------------- | -------: | -------: | -------: | -------: | -------: | -------: |
+| Huber         | 1.007745 | 0.804102 | 0.875368 | 0.048495 | 0.043810 | 0.016950 |
+| OLS           | 1.007417 | 0.803810 | 0.875447 | 0.048390 | 0.043602 | 0.016946 |
+| Random Forest | 1.161457 | 0.922263 | 0.834462 | 0.064041 | 0.052528 | 0.023035 |
+| Ridge         | 1.007422 | 0.803813 | 0.875449 | 0.048386 | 0.043589 | 0.016926 |
+| XGBoost       | 1.101677 | 0.877779 | 0.851041 | 0.058533 | 0.050093 | 0.020788 |
+
+### Baseline Interpretation
+
+OLS, Ridge, and Huber produced very similar results under the correctly specified linear setting.
+
+Their RMSE values were approximately 1.01 and their R² values were approximately 0.875.
+
+This is expected because the data-generating process is linear and closely matches the assumptions under which classical linear regression performs well.
+
+The tree-based machine-learning models did not outperform the linear models in this setting. Random Forest and XGBoost had somewhat higher RMSE and lower R².
+
+This illustrates an important point: greater model flexibility does not automatically result in better performance when the underlying relationship is already well represented by a simple linear model.
+
+---
+
+# Heteroscedasticity Results
+
+The following results were obtained under the simulated heteroscedastic setting.
+
+| Model         |     RMSE |      MAE |       R² |
+| ------------- | -------: | -------: | -------: |
+| OLS           | 1.786699 | 1.332272 | 0.701158 |
+| Ridge         | 1.787095 | 1.332826 | 0.701025 |
+| Huber         | 1.783257 | 1.328901 | 0.702308 |
+| Random Forest | 2.017521 | 1.482035 | 0.618956 |
+| XGBoost       | 1.936975 | 1.424232 | 0.648774 |
+
+### Interpretation
+
+All models experienced higher prediction error compared with the baseline setting.
+
+Huber produced slightly lower RMSE and MAE than OLS and Ridge in this particular experiment.
+
+The tree-based models had higher RMSE and lower R² than the three linear/robust regression models under this simulated heteroscedastic setting.
+
+These results should be interpreted as evidence from the specific simulation design rather than as a universal ranking of models.
+
+---
+
+# Outlier Robustness
+
+Outlier contamination was introduced at four levels:
+
+* 0%
+* 2%
+* 5%
+* 10%
+
+The table reports RMSE.
+
+| Outlier Level |      OLS |    Ridge |    Huber | Random Forest |  XGBoost |
+| ------------: | -------: | -------: | -------: | ------------: | -------: |
+|            0% | 1.046290 | 1.046338 | 1.046298 |      1.214764 | 1.145818 |
+|            2% | 2.434032 | 2.434003 | 2.425874 |      2.611366 | 2.573664 |
+|            5% | 3.266774 | 3.266738 | 3.251857 |      3.451933 | 3.405317 |
+|           10% | 4.749851 | 4.749860 | 4.730177 |      5.015014 | 4.940420 |
+
+### Interpretation
+
+Prediction error increased substantially as the proportion of outliers increased.
+
+Huber had slightly lower RMSE than OLS and Ridge at each contamination level in this experiment.
+
+At 10% contamination:
+
+* OLS RMSE = 4.749851
+* Ridge RMSE = 4.749860
+* Huber RMSE = 4.730177
+* Random Forest RMSE = 5.015014
+* XGBoost RMSE = 4.940420
+
+The results show that all five models were affected by the response-outlier contamination mechanism.
+
+The relative percentage increase from 0% to 10% contamination was smaller for Random Forest than for the other models, but its absolute RMSE at 10% contamination was also the highest. Therefore, percentage change and absolute prediction error provide different perspectives on robustness.
+
+This demonstrates why model robustness should not be summarized using a single metric or a single definition.
+
+---
+
+# Multicollinearity Results
+
+The following results were obtained under the simulated multicollinearity condition.
+
+| Model         |     RMSE |      MAE |       R² |
+| ------------- | -------: | -------: | -------: |
+| OLS           | 1.036938 | 0.827121 | 0.921284 |
+| Ridge         | 1.034399 | 0.824587 | 0.921669 |
+| Huber         | 1.037427 | 0.828088 | 0.921210 |
+| Random Forest | 1.199706 | 0.981640 | 0.894633 |
+| XGBoost       | 1.138818 | 0.891024 | 0.905057 |
+
+### Interpretation
+
+The predictive performance of OLS, Ridge, and Huber was very similar in this simulation.
+
+Ridge produced slightly lower RMSE and MAE than OLS and Huber.
+
+The machine-learning models had higher RMSE and MAE and lower R² in this particular simulation.
+
+The results also illustrate an important distinction between coefficient stability and prediction accuracy. Ridge regression is specifically designed to reduce the effect of correlated predictors through regularization, but prediction performance can remain similar to OLS when multicollinearity is not severe enough to substantially affect predictions.
+
+---
+
+# Nonlinearity Results
+
+The following results were obtained from the nonlinear data-generating process.
+
+| Model         |     RMSE |      MAE |       R² |
+| ------------- | -------: | -------: | -------: |
+| OLS           | 1.036938 | 0.827121 | 0.876029 |
+| Ridge         | 1.037339 | 0.827542 | 0.875933 |
+| Huber         | 1.037429 | 0.828090 | 0.875911 |
+| Random Forest | 1.228379 | 0.956959 | 0.826028 |
+| XGBoost       | 1.132448 | 0.897738 | 0.852140 |
+
+### Interpretation
+
+The nonlinear simulation did not result in the tree-based models outperforming the linear models in this particular experimental configuration.
+
+OLS, Ridge, and Huber produced very similar results.
+
+XGBoost performed better than Random Forest among the two tree-based methods, but its performance remained below that of the linear models in this specific simulation.
+
+This result highlights the importance of considering the exact form and strength of nonlinearity. A nonlinear data-generating process does not automatically guarantee that a flexible machine-learning model will outperform a linear model.
+
+---
+
+# Real-World Application: California Housing
+
+To complement the controlled simulations, the models were evaluated on the California Housing dataset.
+
+The dataset contains information about California housing districts and is commonly used as a regression benchmark.
+
+The target variable represents median house value.
+
+| Model         |      RMSE |       MAE |       R² |
+| ------------- | --------: | --------: | -------: |
+| OLS           | 69,297.72 | 50,413.43 | 0.648840 |
+| Ridge         | 69,250.31 | 50,391.14 | 0.649320 |
+| Huber         | 76,534.64 | 55,733.46 | 0.571666 |
+| Random Forest | 48,757.92 | 31,663.84 | 0.826157 |
+| XGBoost       | 56,343.41 | 38,938.38 | 0.767858 |
+
+### Interpretation
+
+The real-world results differ substantially from the controlled linear simulations.
+
+OLS and Ridge achieved R² values of approximately 0.65.
+
+Huber produced a lower R² of approximately 0.57 on this dataset and split.
+
+Random Forest and XGBoost produced higher predictive performance, with R² values of approximately 0.83 and 0.77 respectively.
+
+The stronger performance of the tree-based models suggests that nonlinear relationships and interactions between predictors may be important in the real-world housing data.
+
+However, these results represent the particular preprocessing, train-test split, and model configurations used in this project. They should not be interpreted as universal evidence that one model is always superior.
+
+---
+
+# Overall Findings
+
+The experiments demonstrate that regression model performance depends strongly on the data-generating process and the type of assumption violation.
+
+### Main observations
+
+* **Baseline:** OLS, Ridge, and Huber performed very similarly when the data followed a linear relationship.
+* **Heteroscedasticity:** Prediction errors increased for all models, with Huber showing a small advantage over OLS and Ridge in the reported experiment.
+* **Outliers:** All models experienced substantial increases in RMSE as contamination increased.
+* **Multicollinearity:** OLS, Ridge, and Huber had similar predictive performance, while Ridge showed a small numerical advantage in this experiment.
+* **Nonlinearity:** The flexible machine-learning models did not automatically outperform the linear models under the specific nonlinear simulation used.
+* **Real-world data:** Random Forest and XGBoost showed substantially stronger predictive performance on the California Housing dataset than the linear and robust regression models.
+
+The overall finding is that **model performance is condition-dependent**. A model that performs well under one data-generating mechanism may not perform similarly under another.
+
+---
+
+# Repository Structure
+
+```text
 ML-Regression-Model-Comparison/
 │
 ├── data/
@@ -113,58 +391,300 @@ ML-Regression-Model-Comparison/
 ├── README.md
 ├── requirements.txt
 └── LICENSE
-How to Run
-1. Clone the repository
-git clone https://github.com/Maryamsattar2025/ML-Regression-Model-Comparison.git
-2. Open the project
-cd ML-Regression-Model-Comparison
-3. Install the required packages
-pip install -r requirements.txt
-4. Open Jupyter
-jupyter notebook
-Open the notebooks in the following order:
-01_baseline_simulation.ipynb
-02_heteroscedasticity.ipynb
-03_outliers.ipynb
-04_multicollinearity.ipynb
-05_nonlinearity.ipynb
-06_real_world_california_housing.ipynb
-Results
-The results/ directory contains the tables and figures generated during the experiments.
+```
+
+---
+
+# Project Components
+
+## `data/`
+
+Contains the real-world California Housing dataset used in the final analysis.
+
+## `notebooks/`
+
+Contains separate Jupyter notebooks for each experimental condition.
+
+### `01_baseline_simulation.ipynb`
+
+Evaluates model performance under the baseline linear data-generating process.
+
+### `02_heteroscedasticity.ipynb`
+
+Investigates model performance when error variance changes with predictor magnitude.
+
+### `03_outliers.ipynb`
+
+Evaluates model behaviour under increasing levels of response outlier contamination.
+
+### `04_multicollinearity.ipynb`
+
+Investigates the effect of highly correlated predictors.
+
+### `05_nonlinearity.ipynb`
+
+Evaluates model performance under a nonlinear data-generating relationship.
+
+### `06_real_world_california_housing.ipynb`
+
+Applies the models to the California Housing dataset.
+
+---
+
+## `src/simulation_functions.py`
+
+Contains reusable Python functions for:
+
+* Data generation
+* Model construction
+* Model evaluation
+* Train-test splitting
+* Repeated simulations
+* Outlier experiments
+* Regression coefficient comparison
+
+This reduces duplicated code across notebooks and makes the analysis easier to reproduce.
+
+---
+
+## `results/`
+
+Stores generated tables and figures.
+
+```text
 results/
 ├── tables/
 └── figures/
-Limitations
-The simulations represent specific data-generating mechanisms and therefore do not cover every possible form of assumption violation.
-Model performance may also change with different hyperparameter settings, sample sizes, contamination mechanisms, and nonlinear functional forms.
-The supplied heteroscedasticity, multicollinearity, and nonlinearity results represent the reported experimental outputs rather than complete repeated-simulation mean ± SD summaries. Future versions can extend these experiments using a larger number of repeated simulations.
-The California Housing experiment is based on the reported train-test evaluation. Repeated cross-validation could provide a more robust estimate of generalization performance.
-Future Work
-Possible extensions include:
-More extensive repeated simulations
-Stronger levels of assumption violations
-Multiple types of outliers
-More severe multicollinearity
-Multiple nonlinear functional forms
-Hyperparameter tuning
-Cross-validation
-Additional regression and machine-learning models
-Prediction intervals and uncertainty quantification
-Model interpretability analysis
+```
 
-Research Context
-This project is motivated by the broader question of how statistical and machine-learning models behave under model misspecification and departures from classical assumptions.
-It provides a bridge between classical regression diagnostics, robust statistical modelling, simulation-based analysis, and modern machine learning.
-Author
-Maryam Sattar
+---
+
+## `report/`
+
+Contains the complete research report in PDF format.
+
+---
+
+# How to Run the Project
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR-USERNAME/ML-Regression-Model-Comparison.git
+```
+
+Replace `YOUR-USERNAME` with your GitHub username.
+
+## 2. Move into the project directory
+
+```bash
+cd ML-Regression-Model-Comparison
+```
+
+## 3. Install the required packages
+
+```bash
+pip install -r requirements.txt
+```
+
+## 4. Start Jupyter
+
+```bash
+jupyter notebook
+```
+
+or:
+
+```bash
+jupyter lab
+```
+
+## 5. Open the notebooks
+
+Run the notebooks in the following order:
+
+1. `01_baseline_simulation.ipynb`
+2. `02_heteroscedasticity.ipynb`
+3. `03_outliers.ipynb`
+4. `04_multicollinearity.ipynb`
+5. `05_nonlinearity.ipynb`
+6. `06_real_world_california_housing.ipynb`
+
+---
+
+# Requirements
+
+The main Python packages used in this project are:
+
+```text
+numpy
+pandas
+matplotlib
+scikit-learn
+xgboost
+jupyter
+notebook
+ipykernel
+```
+
+See `requirements.txt` for the complete package list.
+
+---
+
+# Reproducibility
+
+Random seeds are used in the simulation experiments to make the results reproducible.
+
+The project also separates reusable simulation and model-evaluation functions into:
+
+```text
+src/simulation_functions.py
+```
+
+This allows the experimental notebooks to use a common implementation of the models and data-generating processes.
+
+---
+
+# Limitations
+
+Several limitations should be considered when interpreting the results.
+
+### 1. Limited simulation settings
+
+Only selected forms and levels of assumption violations were investigated.
+
+Different distributions, sample sizes, contamination mechanisms, or strengths of assumption violations could produce different results.
+
+### 2. Number of simulations
+
+The baseline experiment used 30 repeated simulations.
+
+The reported heteroscedasticity, multicollinearity, and nonlinearity results are based on the current experimental runs and are not presented as large repeated-simulation summaries.
+
+### 3. Model hyperparameters
+
+The machine-learning models were evaluated using fixed hyperparameters rather than extensive hyperparameter optimization.
+
+### 4. Single real-world dataset
+
+Only one real-world dataset was used.
+
+Results may differ on datasets from other domains.
+
+### 5. Train-test evaluation
+
+The California Housing results depend on the particular train-test split and preprocessing used in the analysis.
+
+---
+
+# Future Work
+
+Future extensions of the project could include:
+
+* Increasing the number of repeated simulations to 100 or more.
+* Using multiple random seeds for every assumption-violation experiment.
+* Investigating stronger and weaker levels of heteroscedasticity.
+* Studying different types of outliers and leverage points.
+* Examining different levels of multicollinearity.
+* Comparing additional nonlinear data-generating mechanisms.
+* Including generalized linear models and additional robust regression methods.
+* Performing systematic hyperparameter tuning.
+* Using cross-validation for model comparison.
+* Studying prediction uncertainty and confidence intervals.
+* Investigating model misspecification and distribution shift.
+* Extending the analysis to multiple real-world datasets.
+
+---
+
+# Research Context
+
+This project builds on a broader interest in the relationship between classical statistical assumptions and modern machine-learning methods.
+
+The research direction follows the progression:
+
+```text
+Classical Regression
+        ↓
+OLS Assumptions
+        ↓
+Controlled Simulation
+        ↓
+Robust Regression
+        ↓
+Machine Learning
+        ↓
+Model Misspecification
+        ↓
+Distribution Shift
+        ↓
+Reliable Statistical Machine Learning
+        ↓
+Uncertainty Quantification
+```
+
+The project therefore provides a bridge between traditional statistical regression analysis and modern machine-learning approaches.
+
+---
+
+# Key Research Insight
+
+The central lesson from this study is that **there is no single model that performs best under every data-generating condition**.
+
+Model performance depends on:
+
+* The structure of the underlying relationship
+* The presence and type of assumption violations
+* The severity of contamination
+* Predictor relationships
+* The characteristics of the dataset
+* The evaluation metric
+
+Controlled simulation is therefore useful because it allows the behaviour of different models to be studied under known conditions before applying them to complex real-world data.
+
+---
+
+# Author
+
+**Maryam Sattar**
+
 M.Sc. Statistics
 M.Phil. Statistics
-Research interests include:
-Regression modelling
-Robust statistics
-Machine learning
-Simulation-based inference
-Model misspecification
-Uncertainty quantification
-Statistical machine learning
 
+Research interests include:
+
+* Statistical modelling
+* Regression analysis
+* Robust statistics
+* Machine learning
+* Simulation-based inference
+* Model misspecification
+* Uncertainty quantification
+* Reliable statistical machine learning
+
+---
+
+# License
+
+This project is released under the **MIT License**.
+
+See the [`LICENSE`](LICENSE) file for details.
+
+---
+
+# Citation
+
+If you use this project or its code in academic work, please cite the GitHub repository:
+
+```text
+Sattar, M. (2026).
+Robustness of Statistical and Machine-Learning Regression Models
+under Violations of Classical Regression Assumptions:
+A Simulation Study.
+GitHub repository: ML-Regression-Model-Comparison.
+```
+
+---
+
+## Acknowledgement
+
+This project was developed as an independent research and portfolio project to investigate the robustness of statistical and machine-learning regression methods under controlled violations of classical regression assumptions.
